@@ -69,7 +69,7 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         '''
         return self.name
 
-    def get_sort_name(self):
+    def get_short_name(self):
         '''used to get users short name'''
         return self.name
     '''it will tell which fields to print of our user objects'''
