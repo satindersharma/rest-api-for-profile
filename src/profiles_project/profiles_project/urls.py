@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-
+from django.conf.urls import include
+'''to keep urls in app 
+r indicates that its a regular expresion string
+^api/ here carat ^ means everyting through api/ will match and pass through  this include('profiles_api.urls')
+'''
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^api/', include('profiles_api.urls')),
 ]
