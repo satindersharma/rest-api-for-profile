@@ -5,6 +5,15 @@ from rest_framework.response import Response
 from . import serializers
 from rest_framework import status
 from . import models
+from . import permissions
+from rest_framework.authentication import TokenAuthentication
+
+
+''' token authentication is the most effective or most popular way
+to authwnticate an api
+it works by giving the temp token that insert in the headers of the http request
+then django rest framework use this token to check that user has an authaictaion with the system
+'''
 '''here status contain the differnt status code list'''
 
 # Create your views here.
@@ -105,5 +114,9 @@ class UserProfileViewset(viewsets.ModelViewSet):
     '''because UserProfileSerializer has a metadeta thats why this class now for which model it has to look for'''
 
     queryset = models.UserProfile.objects.all()
+    '''(TokenAuthentication,) it cointains the all authentication types that is to used in our api
+    and it is a tuple so it is imputable'''
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
 
 
