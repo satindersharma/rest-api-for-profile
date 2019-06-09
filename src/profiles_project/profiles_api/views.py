@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from . import serializers
 from rest_framework import status
+from . import models
 '''here status contain the differnt status code list'''
 
 # Create your views here.
@@ -96,3 +97,13 @@ class HelloViewset(viewsets.ViewSet):
     def destroy(self, request, pk=None):
         '''handles removing an object.'''
         return Response({'http_method': 'DELETE'})
+
+
+class UserProfileViewset(viewsets.ModelViewSet):
+    '''handales creating reading and updating profiles'''
+    serializer_class = serializers.UserProfileSerializer
+    '''because UserProfileSerializer has a metadeta thats why this class now for which model it has to look for'''
+
+    queryset = models.UserProfile.objects.all()
+
+
