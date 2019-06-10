@@ -15,7 +15,7 @@ from . import permissions
 ''' token authentication is the most effective or most popular way
 to authwnticate an api
 it works by giving the temp token that insert in the headers of the http request
-then django rest framework use this token to check that user has an authaictaion with the system
+then django rest framework use this token to check that user has an authentictaion with the system
 '''
 '''here status contain the differnt status code list'''
 
