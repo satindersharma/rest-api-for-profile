@@ -7,6 +7,9 @@ from rest_framework import status
 from rest_framework import filters
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
+
 from . import serializers
 from . import models
 from . import permissions
@@ -18,6 +21,12 @@ it works by giving the temp token that insert in the headers of the http request
 then django rest framework use this token to check that user has an authentictaion with the system
 '''
 '''here status contain the differnt status code list'''
+
+'''
+IsAuthenticated is quit similar to IsAuthenticatedOrReadOnly
+except it don't let you  read only, you must be authenticated to use the api at all
+'''
+
 
 # Create your views here.
 class HelloAPI(APIView):
@@ -133,3 +142,28 @@ class LoginViewset(viewsets.ViewSet):
         '''use the obtaintoken APIview to valiadte and create'''
         return ObtainAuthToken().post(request)
 
+
+class UserProfileFeedViewset(viewsets.ModelViewSet):
+    '''handles creating reading and updating  profile feed items'''
+
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.ProfileFeedItemSerializer
+    queryset = models.ProfileFeedItem.objects.all()
+    '''IsAuthenticatedOrReadOnly gives the user permission  to oto do anythig they want when they authenticated
+    but it restrict them to only read only access if they are not authenticated
+    
+    if user try to update another status then it will run permissions.PostOwnStatus
+    IsAuthenticatedOrReadOnly this helps to give only read only acces when they are not authenticated
+    '''
+    '''we are going to change it from
+    permission_classes = (permissions.PostOwnStatus, IsAuthenticatedOrReadOnly)
+    to
+    permission_classes = (permissions.PostOwnStatus, IsAuthenticated)
+    '''
+    permission_classes = (permissions.PostOwnStatus, IsAuthenticated)
+
+
+    def perform_create(self, serializer):
+        '''sets the user profile to the looged in user'''
+
+        serializer.save(user_profile=self.request.user)

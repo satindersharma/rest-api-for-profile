@@ -15,3 +15,18 @@ class UpdateOwnProfile(permissions.BasePermission):
         and if not then permisin is denied
         '''
         return obj.id == request.user.id
+
+
+class PostOwnStatus(permissions.BasePermission):
+    '''Allow user to update you rown status'''
+
+    def has_object_permission(self, request, view, obj):
+        '''check user is trying to update their own status'''
+
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        '''
+        it will check that the user profile id of the status item they are trying to
+         update matches the request.user.id which is the same the user that is logind in   right now 
+        '''
+        return obj.user_profile.id == request.user.id

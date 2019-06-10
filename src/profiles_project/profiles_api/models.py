@@ -78,6 +78,8 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 '''creating the model for our feed items'''
+
+
 class ProfileFeedItem(models.Model):
     '''profile status upate'''
 
